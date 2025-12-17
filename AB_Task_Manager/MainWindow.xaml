@@ -6,7 +6,80 @@
         xmlns:local="clr-namespace:AB_Task_Manager"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
 
+    <Window.DataContext>
+        <local:MainViewModel />
+    </Window.DataContext>
+
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="75*"/>
+            <ColumnDefinition Width="82*"/>
+            <ColumnDefinition Width="193*"/>
+            <ColumnDefinition Width="430*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,0,0,10" Grid.ColumnSpan="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox Grid.Column="0" 
+                     Text="{Binding NewTaskTitle, UpdateSourceTrigger=PropertyChanged}" 
+                     Padding="5"/>
+
+            <Button Grid.Column="1" 
+                    Content="Dodaj" 
+                    Command="{Binding AddTaskCommand}"
+                    Padding="10,0" Margin="5,0,0,0"/>
+        </Grid>
+
+        <ListBox Grid.Row="1" 
+                 ItemsSource="{Binding Tasks}" 
+                 HorizontalContentAlignment="Stretch" Grid.ColumnSpan="3" SelectionChanged="ListBox_SelectionChanged">
+
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <CheckBox Grid.Column="0" 
+                                  IsChecked="{Binding IsDone}" 
+                                  VerticalAlignment="Center"/>
+
+                        <TextBlock Grid.Column="1" 
+                                   Text="{Binding Title}" 
+                                   Margin="10,0,0,0"
+                                   VerticalAlignment="Center"
+                                   FontSize="16">
+
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextDecorations" Value="None"/>
+                                    <Setter Property="Foreground" Value="Black"/>
+
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsDone}" Value="True">
+                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                            <Setter Property="Foreground" Value="Gray"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+
+                        </TextBlock>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
+
 </Window>
